@@ -154,8 +154,6 @@ jobs:
           wget "https://github.com/aquynh/capstone/archive/${CAPSTONE_VER}.tar.gz"
           tar -xzf ${CAPSTONE_VER}.tar.gz
           echo "CAPSTONE_SRC=$PWD/capstone-${CAPSTONE_VER}" >> $GITHUB_ENV
-      - run: |
-          echo $HOST
       - name: Package OpenOCD for linux
         env:
           MAKE_JOBS: 2
@@ -174,8 +172,7 @@ jobs:
           export OPENOCD_CONFIG=""
           mkdir -p $BUILD_DIR &&  cd $BUILD_DIR
 
-          bash $OPENOCD_SRC/configure
-          #bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
+          bash $OPENOCD_SRC/contrib/vendored-build.sh $HOST
 
           # add missing dlls
           #cd $HOST-root/usr
@@ -219,8 +216,8 @@ jobs:
       DL_DIR: ../downloads
       BUILD_DIR: ../build
     steps:
-      #- name: Install needed packages
-      #  run: brew install autoconf automake libtool pkg-config cmake texinfo texlive
+      - name: Install needed packages
+      - run: brew install libtool automake libusb wget pkg-config gcc texinfo
       - uses: actions/checkout@v1
       - run: ./bootstrap
       - name: Prepare libusb1
@@ -276,7 +273,7 @@ jobs:
           export OPENOCD_SRC=$PWD
           export OPENOCD_CONFIG=""
           mkdir -p $BUILD_DIR &&  cd $BUILD_DIR
-          bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
+          bash $OPENOCD_SRC/contrib/vendored-build.sh $HOST
           # add missing dlls
           #cd $HOST-root/usr
           #cp `$HOST-gcc --print-file-name=libwinpthread-1.dll` ./bin/
