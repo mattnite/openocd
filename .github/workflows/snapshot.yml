@@ -181,7 +181,7 @@ jobs:
           echo "ARTIFACT_NAME=$ARTIFACT" >> $GITHUB_ENV
           echo "ARTIFACT_PATH=$PWD/$ARTIFACT" >> $GITHUB_ENV
       - name: Publish OpenOCD packaged for linux
-        unses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v1
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_PATH }}
