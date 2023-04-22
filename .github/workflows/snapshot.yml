@@ -173,50 +173,54 @@ jobs:
           export OPENOCD_SRC=$PWD
           export OPENOCD_CONFIG=""
           mkdir -p $BUILD_DIR &&  cd $BUILD_DIR
-          bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
+
+          bash $OPENOCD_SRC/configure
+          #bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
+
           # add missing dlls
           #cd $HOST-root/usr
           #cp `$HOST-gcc --print-file-name=libwinpthread-1.dll` ./bin/
           #cp `$HOST-gcc --print-file-name=libgcc_s_sjlj-1.dll` ./bin/
+
           # prepare the artifact
-          ARTIFACT="openocd-${OPENOCD_TAG}-${HOST}.tar.gz"
-          tar -czf $ARTIFACT *
-          echo "ARTIFACT_NAME=$ARTIFACT" >> $GITHUB_ENV
-          echo "ARTIFACT_PATH=$PWD/$ARTIFACT" >> $GITHUB_ENV
-      - name: Publish OpenOCD packaged for linux
-        uses: actions/upload-artifact@v1
-        with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.ARTIFACT_PATH }}
-      - name: Create Release
-        id: create_release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/create-release@v1.1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Release OpenOCD packaged for linux
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: ${{ env.ARTIFACT_NAME }}
-          asset_content_type: application/gzip
+          #ARTIFACT="openocd-${OPENOCD_TAG}-${HOST}.tar.gz"
+          #tar -czf $ARTIFACT *
+          #echo "ARTIFACT_NAME=$ARTIFACT" >> $GITHUB_ENV
+          #echo "ARTIFACT_PATH=$PWD/$ARTIFACT" >> $GITHUB_ENV
+          #- name: Publish OpenOCD packaged for linux
+          #  uses: actions/upload-artifact@v1
+          #  with:
+          #    name: ${{ env.ARTIFACT_NAME }}
+          #    path: ${{ env.ARTIFACT_PATH }}
+          #- name: Create Release
+          #  id: create_release
+          #  if: startsWith(github.ref, 'refs/tags/')
+          #  uses: actions/create-release@v1.1.4
+          #  env:
+          #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #  with:
+          #    tag_name: ${{ github.ref }}
+          #    release_name: ${{ github.ref }}
+          #    draft: false
+          #    prerelease: false
+          #- name: Release OpenOCD packaged for linux
+          #  if: startsWith(github.ref, 'refs/tags/')
+          #  uses: actions/upload-release-asset@v1
+          #  env:
+          #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #  with:
+          #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+          #    asset_path: ${{ env.ARTIFACT_PATH }}
+          #    asset_name: ${{ env.ARTIFACT_NAME }}
+          #    asset_content_type: application/gzip
   package-macos:
     runs-on: [macos-latest]
     env:
       DL_DIR: ../downloads
       BUILD_DIR: ../build
     steps:
-      - name: Install needed packages
-        run: brew install autoconf automake libtool pkg-config cmake texinfo texlive
+      #- name: Install needed packages
+      #  run: brew install autoconf automake libtool pkg-config cmake texinfo texlive
       - uses: actions/checkout@v1
       - run: ./bootstrap
       - name: Prepare libusb1
