@@ -118,7 +118,7 @@ jobs:
         run: |
           ./bootstrap
           mkdir package
-          ./configure --enable-picoprobe --prefix ./package
+          ./configure --enable-picoprobe --prefix $PWD/package
           make -j2 install
           # prepare the artifact
           ARTIFACT="openocd-${OPENOCD_TAG}-x86_64-linux.tar.gz"

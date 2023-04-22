@@ -156,7 +156,7 @@ fi
 mkdir -p $OPENOCD_BUILD_DIR
 cd $OPENOCD_BUILD_DIR
 $OPENOCD_SRC/configure --build=`$OPENOCD_SRC/config.guess` --host=$HOST_TRIPLET \
---with-sysroot=$SYSROOT --prefix=$PREFIX \
+--with-sysroot=$SYSROOT --prefix=$PREFIX --enable-picoprobe --disable-werror \
 $OPENOCD_CONFIG
 make -j $MAKE_JOBS
 make install-strip DESTDIR=$SYSROOT
