@@ -170,7 +170,8 @@ jobs:
           export OPENOCD_SRC=$PWD
           export OPENOCD_CONFIG=""
           mkdir -p $BUILD_DIR &&  cd $BUILD_DIR
-          bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
+          make -C $OPENOCD_SRC
+          #bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
           # add missing dlls
           #cd $HOST-root/usr
           #cp `$HOST-gcc --print-file-name=libwinpthread-1.dll` ./bin/
