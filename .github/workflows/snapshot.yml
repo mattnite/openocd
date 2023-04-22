@@ -172,7 +172,7 @@ jobs:
           export OPENOCD_CONFIG=""
           mkdir -p $BUILD_DIR &&  cd $BUILD_DIR
 
-          bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
+          bash $OPENOCD_SRC/contrib/vendored-build.sh $HOST
 
           # add missing dlls
           #cd $HOST-root/usr
