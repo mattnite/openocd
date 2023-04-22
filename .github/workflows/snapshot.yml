@@ -157,7 +157,7 @@ jobs:
       - name: Package OpenOCD for linux
         env:
           MAKE_JOBS: 2
-          HOST: x86_64-linux
+          HOST: x86_64-pc-linux-gnu
           LIBUSB1_CONFIG: --enable-shared --enable-static
           HIDAPI_CONFIG: --enable-shared --disable-static --disable-testgui
           LIBFTDI_CONFIG: "-DBUILD_TESTS:BOOL=off -DFTDIPP:BOOL=off -DPYTHON_BINDINGS:BOOL=off -DEXAMPLES:BOOL=off -DDOCUMENTATION:BOOL=off -DFTDI_EEPROM:BOOL=off"
@@ -172,7 +172,7 @@ jobs:
           export OPENOCD_CONFIG=""
           mkdir -p $BUILD_DIR &&  cd $BUILD_DIR
 
-          bash $OPENOCD_SRC/contrib/vendored-build.sh $HOST
+          bash $OPENOCD_SRC/contrib/cross-build.sh $HOST
 
           # add missing dlls
           #cd $HOST-root/usr
