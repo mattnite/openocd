@@ -115,7 +115,7 @@ jobs:
       BUILD_DIR: ../build
     steps:
       - name: Install needed packages
-        run: sudo apt-get install autotools-dev autoconf automake libtool pkg-config cmake texinfo texlive libudev-dev
+        run: sudo apt update && sudo apt-get install autotools-dev autoconf automake libtool pkg-config cmake texinfo texlive libudev-dev
       - uses: actions/checkout@v1
       - run: ./bootstrap
       - name: Prepare libusb1
