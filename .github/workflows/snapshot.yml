@@ -151,49 +151,50 @@ jobs:
           asset_path: ${{ env.ARTIFACT_PATH }}
           asset_name: ${{ env.ARTIFACT_NAME }}
           asset_content_type: application/gzip
-  package-macos:
-    runs-on: [macos-latest]
-    env:
-      DL_DIR: ../downloads
-      BUILD_DIR: ../build
-    steps:
-      - name: Install packages
-      - run: brew install libtool automake libusb wget pkg-config gcc texinfo
-      - uses: actions/checkout@v1
-      - name: Build
-        run: |
-          ./bootstrap
-          mkdir package
-          ./configure --enable-picoprobe --disable-werror --prefix package
-          make -j2 install
-          # prepare the artifact
-          ARTIFACT="openocd-${OPENOCD_TAG}-x86_64-macos.tar.gz"
-          tar -czf $ARTIFACT package
-          echo "ARTIFACT_NAME=$ARTIFACT" >> $GITHUB_ENV
-          echo "ARTIFACT_PATH=$PWD/$ARTIFACT" >> $GITHUB_ENV
-      - name: Publish OpenOCD packaged for macos
-        uses: actions/upload-artifact@v1
-        with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.ARTIFACT_PATH }}
-      - name: Create Release
-        id: create_release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/create-release@v1.1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Release OpenOCD packaged for linux
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: ${{ env.ARTIFACT_NAME }}
-          asset_content_type: application/gzip
+            #package-macos:
+            #  runs-on: [macos-latest]
+            #  env:
+            #    DL_DIR: ../downloads
+            #    BUILD_DIR: ../build
+            #  steps:
+            #    - name: Install packages
+            #    - run: brew install libtool automake libusb wget pkg-config gcc texinfo
+            #    - uses: actions/checkout@v1
+            #    - name: Build
+            #      run: |
+            #        export PATH="/usr/local/opt/texinfo/bin:$PATH"
+            #        ./bootstrap
+            #        mkdir package
+            #        ./configure --enable-picoprobe --disable-werror --prefix package
+            #        make -j2 install
+            #        # prepare the artifact
+            #        ARTIFACT="openocd-${OPENOCD_TAG}-x86_64-macos.tar.gz"
+            #        tar -czf $ARTIFACT package
+            #        echo "ARTIFACT_NAME=$ARTIFACT" >> $GITHUB_ENV
+            #        echo "ARTIFACT_PATH=$PWD/$ARTIFACT" >> $GITHUB_ENV
+            #    - name: Publish OpenOCD packaged for macos
+            #      uses: actions/upload-artifact@v1
+            #      with:
+            #        name: ${{ env.ARTIFACT_NAME }}
+            #        path: ${{ env.ARTIFACT_PATH }}
+            #    - name: Create Release
+            #      id: create_release
+            #      if: startsWith(github.ref, 'refs/tags/')
+            #      uses: actions/create-release@v1.1.4
+            #      env:
+            #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #      with:
+            #        tag_name: ${{ github.ref }}
+            #        release_name: ${{ github.ref }}
+            #        draft: false
+            #        prerelease: false
+            #    - name: Release OpenOCD packaged for linux
+            #      if: startsWith(github.ref, 'refs/tags/')
+            #      uses: actions/upload-release-asset@v1
+            #      env:
+            #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #      with:
+            #        upload_url: ${{ steps.create_release.outputs.upload_url }}
+            #        asset_path: ${{ env.ARTIFACT_PATH }}
+            #        asset_name: ${{ env.ARTIFACT_NAME }}
+            #        asset_content_type: application/gzip
